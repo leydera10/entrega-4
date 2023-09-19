@@ -36,7 +36,7 @@ document.getElementById('input_products').addEventListener('submit', (e)=> {
         stock: stock,
         category: category
     };
-    console.log(newProduct)
+    
     socket.emit("newProd",newProduct);
 });
 

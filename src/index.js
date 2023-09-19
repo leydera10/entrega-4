@@ -23,7 +23,7 @@ const socketServer = new Server(httServer)
 
 
 socketServer.on("connection", (socket) => {
-    
+    //console.log("Estamos onfire");
 
     socket.on("msj", (data) => {
         console.log(data);
