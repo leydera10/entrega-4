@@ -1,26 +1,49 @@
 import { Router } from "express";
-import CartManager from "../controllers/CartManager.js";
+import {cartsModel}  from "../models/carts.model.js";
 
-const CartRouter = Router()
-const carts = new CartManager
+const router =  Router();
 
-CartRouter.post("/", async (req, res) => {
-    res.send(await carts.addCarts());
-})
+router.get('/', async (req, res) => {
+    try {
+        let carts = await cartsModel.find();
+        res.send({ result: "success", payload: carts});
+    } catch (error) {
+        console.log(error);
+    }
 
-CartRouter.get('/', async (req, res) => {
-    res.send(await carts.readCarts())
-}) 
+});
 
-CartRouter.get('/:id', async (req, res) => {
-    res.send(await carts.getCartsById(req.params.id))
-}) 
+router.post('/', async (req, res) => {
+    let { description, quantity, total} = req.body;
+    if (!description || !quantity || !total) {
+        res.send({status: "error", error: "Missing body parms"});
+    }
+    let result = await cartsModel.create({ description,quantity,total})
+    res.send({result:"succes", payload: result}); 
+});
 
-CartRouter.post('/:cid/products/:pid', async (req, res) => {
-    let cartId = req.params.cid;
-    let productId = req.params.pid;
-    res.send(await carts.addProductToCart(cartId, productId))
-})
+router.put('/:id_cart', async (req, res) => {
+    let { id_cart} = req.params;
+
+    let cartsToReplace = req.body;
+    if (!cartsToReplace.description || !cartsToReplace.quantity || !cartsToReplace.total) {
+        res.send({status: "error", error: "Missing body parms"});
+    }
+    let result = await cartsModel.updateOne({ _id: id_cart}, cartsToReplace)
+    res.send({result:"succes", payload: result})
+});
 
 
-export default CartRouter
+router.delete('/:id_cart', async (req, res) => {
+    let { id_cart } = req.params; 
+    let result = await cartsModel.deleteOne({ _id: id_cart });
+
+    if (result.deletedCount === 1) {
+        res.send({ result: "success", message: "Cart deleted successfully" });
+    } else {
+        res.status(404).send({ result: "error", message: "Cart not found" });
+    }
+});
+
+
+export default router

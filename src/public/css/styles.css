@@ -1,91 +1,54 @@
-/* Estilos generales */
+/* Estilo para el formulario "millennial" */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-/* Estilos de la tabla */
-.table-container {
-    max-width: 800px;
-    margin: 20px auto;
+#username-form {
     background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-}
-
-.product-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.product-table th,
-.product-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.product-table th {
-    background-color: #333;
-    color: #fff;
-}
-
-.product-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.product-table tbody tr:hover {
-    background-color: #ddd;
-}
-
-.title {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-/* Estilo para el formulario millennial */
-.formulario {
-    background-color: #f4f4f4;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding-bottom: 10px;
+    padding-top: 20px;
     text-align: center;
     width: 300px;
-    margin: 20px auto; /* Margen superior e inferior de 20px y centrado horizontalmente */
+    margin: 20px auto;
 }
 
-.formulario h1 {
+#username-form h1 {
     font-size: 24px;
     color: #333;
     margin-bottom: 20px;
 }
 
-.inputs input {
-    width: 100%;
-    padding: 5px;
+#username,
+#message {
+    
+    padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
-    text-align: center; /* Centrar el texto horizontalmente en el campo de entrada */
-    
-    margin-top: 5px; /* Añadir un pequeño espacio superior para separar los campos verticalmente */
+    resize: vertical; 
 }
 
-.botones button {
-    background-color: #ff6b6b;
-    color: white;
+button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 18px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.botones button:hover {
-    background-color: #574f4f;
+button[type="submit"]:hover {
+    background-color: #0056b3;
 }
+

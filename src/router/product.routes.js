@@ -1,50 +1,49 @@
 import { Router } from "express";
-import ProductManager from "../controllers/ProductManager.js";
+import { productsModel } from "../models/products.model.js";
 
-const ProductRouter = Router()
-const product = new ProductManager();
+const router =  Router();
 
-
-//comentamos el router inicial 
- /*ProductRouter.get("/", async (req, res) => {
-    res.send(await product.getProducts())
-})*/
-
- ProductRouter.get("/:id", async (req, res) => {
-    let id = req.params.id
-    res.send(await product.getProductsById(id))
-})
-
- ProductRouter.post("/", async (req, res) => {
-    let newProduct = req.body
-      if (
-        !newProduct.name ||
-        !newProduct.description ||
-        !newProduct.code ||
-        !newProduct.price ||
-        !newProduct.stock ||
-        !newProduct.category) {
-        return res.status(400).json({ error: 'Debe proporcionar todos los campos: name, description, code, price, stock, category, thumbnail (opcional).' });
+router.get('/', async (req, res) => {
+    try {
+        let products = await productsModel.find();
+        res.send({ result: "success", payload: products});
+    } catch (error) {
+        console.log(error);
     }
 
-    res.send(await product.addProducts(newProduct))
-})
+});
 
- ProductRouter.put("/:id", async (req, res) => {
-    let id = req.params.id
-    let updateProducts = req.body;
-    res.send(await product.updateProducts(id, updateProducts))
-})
+router.post('/', async (req, res) => {
+    let { description, img, Price, Stock} = req.body;
+    if (!description || !img ||!Price ||!Stock) {
+        res.send({status: "error", error: "Missing body parms"});
+    }
+    let result = await productsModel.create({ user, products})
+    res.send({result:"succes", payload: result});
+});
 
- ProductRouter.delete("/:id", async (req, res) => {
-    let id = req.params.id
-    res.send(await product.deleteProducts(id))
-})
+router.put('/:id_prod', async (req, res) => {
+    let { id_prod} = req.params;
 
-ProductRouter.get("/", async (req, res) => {
-    let ProdT = await product.getProducts()
-    res.render("partials/realTimeProduct", { title: "Socket", ProdT })
-})
+    let productsToReplace = req.body;
+    if (!productsToReplace.description || !productsToReplace.img || !productsToReplace.Price || !productsToReplace.Stock ) {
+        res.send({status: "error", error: "Missing body parms"});
+    }
+    let result = await messageModel.updateOne({ _id: id_prod}, productsToReplace)
+    res.send({result:"succes", payload: result})
+});
 
 
-export default ProductRouter
+router.delete('/:id_prod', async (req, res) => {
+    let { id_prod } = req.params; // Obtén el ID del producto desde req.params
+    let result = await productsModel.deleteOne({ _id: id_prod });
+
+    if (result.deletedCount === 1) {
+        res.send({ result: "success", message: "Product deleted successfully" });
+    } else {
+        res.status(404).send({ result: "error", message: "Product not found" });
+    }
+});
+
+
+export default router
